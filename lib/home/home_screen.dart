@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:market_app/home/widgets/home_widget.dart';
+import 'package:market_app/home/widgets/seller_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.logout)),
+          if(_menuIndex == 0)
           IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.search)),
         ],
       ),
@@ -28,9 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         index: _menuIndex,
         children: [
           HomeWidget(),
-          Container(
-            color: Colors.indigo,
-          ),
+          SellerWidget(),
         ],
       ),
       floatingActionButton: switch (_menuIndex) {
