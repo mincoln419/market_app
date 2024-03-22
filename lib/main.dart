@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:market_app/home/widgets/seller_widget.dart';
 import 'package:market_app/login/login_screen.dart';
 import 'package:market_app/login/sign_up_screen.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ProductAddScreen(),
+      home: HomeScreen(),
     );
   }
 }
