@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:market_app/home/cart_screen.dart';
+import 'package:market_app/home/product_add_screen.dart';
 import 'package:market_app/home/widgets/home_widget.dart';
 import 'package:market_app/home/widgets/seller_widget.dart';
 
@@ -47,7 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         1 => FloatingActionButton(
             child: const Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const ProductAddScreen())
+              );
+            },
           ),
         int() => null,
       },

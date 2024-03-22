@@ -68,8 +68,63 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ),
                             PopupMenuButton(itemBuilder: (context) {
                               return [
-                                const PopupMenuItem(
+                                PopupMenuItem(
                                   child: Text('리뷰등록'),
+                                  onTap: () {
+                                    int reviewScore = 0;
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        TextEditingController reviewTEC =
+                                            TextEditingController();
+                                        return StatefulBuilder(
+                                            builder: (context, setState) {
+                                          return AlertDialog(
+                                            title: Text('리뷰등록'),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                TextField(
+                                                  controller: reviewTEC,
+                                                ),
+                                                Row(
+                                                  children: List.generate(
+                                                    5,
+                                                    (index) => IconButton(
+                                                      onPressed: () {
+                                                        setState(
+                                                          () => reviewScore =
+                                                              index,
+                                                        );
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.star,
+                                                        color:
+                                                            index <= reviewScore
+                                                                ? Colors.orange
+                                                                : Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                                child: Text('취소'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {},
+                                                child: Text('등록'),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                      },
+                                    );
+                                  },
                                 ),
                               ];
                             }),
