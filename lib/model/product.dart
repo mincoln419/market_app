@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product.freezed.dart';
-
 part 'product.g.dart';
 
 @freezed
@@ -21,4 +20,21 @@ sealed class Product with _$Product {
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
+}
+
+@freezed
+sealed class Cart with _$Cart {
+  const factory Cart({
+    String? cartDocId,
+    String? uid,
+    String? email,
+    int? timestamp,
+    int? count,
+    Product? product,
+  }) = _Cart;
+
+
+
+  factory Cart.fromJson(Map<String, dynamic> json) =>
+      _$CartFromJson(json);
 }

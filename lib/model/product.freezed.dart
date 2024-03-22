@@ -329,3 +329,271 @@ abstract class _Product implements Product {
   _$$ProductImplCopyWith<_$ProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+Cart _$CartFromJson(Map<String, dynamic> json) {
+  return _Cart.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Cart {
+  String? get cartDocId => throw _privateConstructorUsedError;
+  String? get uid => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  int? get timestamp => throw _privateConstructorUsedError;
+  int? get count => throw _privateConstructorUsedError;
+  Product? get product => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $CartCopyWith<Cart> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CartCopyWith<$Res> {
+  factory $CartCopyWith(Cart value, $Res Function(Cart) then) =
+      _$CartCopyWithImpl<$Res, Cart>;
+  @useResult
+  $Res call(
+      {String? cartDocId,
+      String? uid,
+      String? email,
+      int? timestamp,
+      int? count,
+      Product? product});
+
+  $ProductCopyWith<$Res>? get product;
+}
+
+/// @nodoc
+class _$CartCopyWithImpl<$Res, $Val extends Cart>
+    implements $CartCopyWith<$Res> {
+  _$CartCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? cartDocId = freezed,
+    Object? uid = freezed,
+    Object? email = freezed,
+    Object? timestamp = freezed,
+    Object? count = freezed,
+    Object? product = freezed,
+  }) {
+    return _then(_value.copyWith(
+      cartDocId: freezed == cartDocId
+          ? _value.cartDocId
+          : cartDocId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uid: freezed == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      timestamp: freezed == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as int?,
+      count: freezed == count
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int?,
+      product: freezed == product
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product?,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ProductCopyWith<$Res>? get product {
+    if (_value.product == null) {
+      return null;
+    }
+
+    return $ProductCopyWith<$Res>(_value.product!, (value) {
+      return _then(_value.copyWith(product: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
+  factory _$$CartImplCopyWith(
+          _$CartImpl value, $Res Function(_$CartImpl) then) =
+      __$$CartImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? cartDocId,
+      String? uid,
+      String? email,
+      int? timestamp,
+      int? count,
+      Product? product});
+
+  @override
+  $ProductCopyWith<$Res>? get product;
+}
+
+/// @nodoc
+class __$$CartImplCopyWithImpl<$Res>
+    extends _$CartCopyWithImpl<$Res, _$CartImpl>
+    implements _$$CartImplCopyWith<$Res> {
+  __$$CartImplCopyWithImpl(_$CartImpl _value, $Res Function(_$CartImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? cartDocId = freezed,
+    Object? uid = freezed,
+    Object? email = freezed,
+    Object? timestamp = freezed,
+    Object? count = freezed,
+    Object? product = freezed,
+  }) {
+    return _then(_$CartImpl(
+      cartDocId: freezed == cartDocId
+          ? _value.cartDocId
+          : cartDocId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uid: freezed == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      timestamp: freezed == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as int?,
+      count: freezed == count
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int?,
+      product: freezed == product
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$CartImpl with DiagnosticableTreeMixin implements _Cart {
+  const _$CartImpl(
+      {this.cartDocId,
+      this.uid,
+      this.email,
+      this.timestamp,
+      this.count,
+      this.product});
+
+  factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CartImplFromJson(json);
+
+  @override
+  final String? cartDocId;
+  @override
+  final String? uid;
+  @override
+  final String? email;
+  @override
+  final int? timestamp;
+  @override
+  final int? count;
+  @override
+  final Product? product;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'Cart(cartDocId: $cartDocId, uid: $uid, email: $email, timestamp: $timestamp, count: $count, product: $product)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'Cart'))
+      ..add(DiagnosticsProperty('cartDocId', cartDocId))
+      ..add(DiagnosticsProperty('uid', uid))
+      ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('timestamp', timestamp))
+      ..add(DiagnosticsProperty('count', count))
+      ..add(DiagnosticsProperty('product', product));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CartImpl &&
+            (identical(other.cartDocId, cartDocId) ||
+                other.cartDocId == cartDocId) &&
+            (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp) &&
+            (identical(other.count, count) || other.count == count) &&
+            (identical(other.product, product) || other.product == product));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, cartDocId, uid, email, timestamp, count, product);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CartImplCopyWith<_$CartImpl> get copyWith =>
+      __$$CartImplCopyWithImpl<_$CartImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CartImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Cart implements Cart {
+  const factory _Cart(
+      {final String? cartDocId,
+      final String? uid,
+      final String? email,
+      final int? timestamp,
+      final int? count,
+      final Product? product}) = _$CartImpl;
+
+  factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
+
+  @override
+  String? get cartDocId;
+  @override
+  String? get uid;
+  @override
+  String? get email;
+  @override
+  int? get timestamp;
+  @override
+  int? get count;
+  @override
+  Product? get product;
+  @override
+  @JsonKey(ignore: true)
+  _$$CartImplCopyWith<_$CartImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

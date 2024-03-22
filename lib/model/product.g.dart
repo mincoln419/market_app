@@ -31,3 +31,24 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
       'imgUrl': instance.imgUrl,
       'timestamp': instance.timestamp,
     };
+
+_$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
+      cartDocId: json['cartDocId'] as String?,
+      uid: json['uid'] as String?,
+      email: json['email'] as String?,
+      timestamp: json['timestamp'] as int?,
+      count: json['count'] as int?,
+      product: json['product'] == null
+          ? null
+          : Product.fromJson(json['product'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
+    <String, dynamic>{
+      'cartDocId': instance.cartDocId,
+      'uid': instance.uid,
+      'email': instance.email,
+      'timestamp': instance.timestamp,
+      'count': instance.count,
+      'product': instance.product,
+    };
