@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:market_app/home/cart_screen.dart';
 import 'package:market_app/home/widgets/home_widget.dart';
 import 'package:market_app/home/widgets/seller_widget.dart';
 
@@ -22,8 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.logout)),
-          if(_menuIndex == 0)
-          IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.search)),
+          if (_menuIndex == 0)
+            IconButton(onPressed: () {}, icon: Icon(CupertinoIcons.search)),
         ],
       ),
       body: IndexedStack(
@@ -35,11 +36,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: switch (_menuIndex) {
         0 => FloatingActionButton(
-          child: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () {},
+            child: const Icon(Icons.shopping_cart_outlined),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const CartScreen(),
+                ),
+              );
+            },
           ),
         1 => FloatingActionButton(
-          child: const Icon(Icons.add),
+            child: const Icon(Icons.add),
             onPressed: () {},
           ),
         int() => null,

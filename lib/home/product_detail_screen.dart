@@ -98,31 +98,53 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                   DefaultTabController(
-                      length: 2,
-                      child: Column(
-                        children: [
-                          const TabBar(
-                            tabs: [
-                              Tab(text: '제품상세',),
-                              Tab(text: '리뷰',),
+                    length: 2,
+                    child: Column(
+                      children: [
+                        const TabBar(
+                          tabs: [
+                            Tab(
+                              text: '제품상세',
+                            ),
+                            Tab(
+                              text: '리뷰',
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: 500,
+                          child: TabBarView(
+                            children: [
+                              Container(
+                                child: Text('제품 상세'),
+                              ),
+                              Container(
+                                child: Text('리뷰 화면'),
+                              ),
                             ],
                           ),
-                          Container(
-                            height: 500,
-                            child: TabBarView(
-                              children: [
-                                Container(
-                                  child: Text('제품 상세'),
-                                ),
-                                Container(
-                                  child: Text('리뷰 화면'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),)
+                        ),
+                      ],
+                    ),
+                  )
                 ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            child: Container(
+              height: 72,
+              decoration: BoxDecoration(
+                color: Colors.red[100],
+              ),
+              child: Center(
+                child: Text(
+                  '장바구니',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
               ),
             ),
           )
