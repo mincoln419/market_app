@@ -91,7 +91,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       await storageRef.putData(compressedData);
       final downloadLink = await storageRef.getDownloadURL();
 
-      for(var i = 0 ; i < 10 ; i++){
+      for (var i = 0; i < 10; i++) {
         final sampleData = Product(
           title: titleTEC.text + ' $i',
           description: descriptionTEC.text,
@@ -106,12 +106,13 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         );
         final doc = await db.collection('products').add(sampleData.toJson());
         await doc.collection('category').add(selectedCategory?.toJson() ?? {});
-        final categoRef = db.collection('category').doc(selectedCategory?.docId);
+        final categoRef =
+            db.collection('category').doc(selectedCategory?.docId);
         await categoRef.collection("products").add({"docId": doc.id});
       }
-
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -135,10 +136,14 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                 );
               },
               icon: Icon(Icons.camera_alt_outlined)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.batch_prediction)),
           IconButton(
-              onPressed: () {
-                addProducts();
+              onPressed: () async {
+                await addProducts().then((value) => Navigator.of(context).pop());
+              },
+              icon: Icon(Icons.batch_prediction)),
+          IconButton(
+              onPressed: () async{
+                await addProduct().then((value) => Navigator.of(context).pop());
               },
               icon: Icon(Icons.add)),
         ],

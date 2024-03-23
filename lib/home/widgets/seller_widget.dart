@@ -102,7 +102,7 @@ class _SellerWidgetState extends State<SellerWidget> {
                       itemBuilder: (context, index) {
                         final item = items?[index];
                         return GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             print(item?.docId);
                           },
                           child: Container(
@@ -117,7 +117,8 @@ class _SellerWidgetState extends State<SellerWidget> {
                                     color: Colors.blue,
                                     borderRadius: BorderRadius.circular(8),
                                     image: DecorationImage(
-                                      image: NetworkImage(item?.imgUrl?? "https://cdn.pixabay.com/photo/2024/03/05/19/26/duck-8615153_1280.jpg"),
+                                      image: NetworkImage(item?.imgUrl ??
+                                          "https://cdn.pixabay.com/photo/2024/03/05/19/26/duck-8615153_1280.jpg"),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -146,19 +147,59 @@ class _SellerWidgetState extends State<SellerWidget> {
                                                   child: Text("리뷰"),
                                                 ),
                                                 PopupMenuItem(
+                                                  child: Text('수정하기'),
+                                                  onTap: () async {
+                                                    final ref =
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'products');
+                                                    await ref
+                                                        .doc(item?.docId)
+                                                        .update(item!
+                                                            .copyWith(
+                                                              title: "milk kim",
+                                                              price: 10000,
+                                                            )
+                                                            .toJson());
+                                                  },
+                                                ),
+                                                PopupMenuItem(
                                                   child: Text("삭제"),
                                                   onTap: () async {
-                                                    await FirebaseFirestore.instance.collection('products').doc(
-                                                      item?.docId
-                                                    ).delete();
+                                                    final db = FirebaseFirestore
+                                                        .instance;
+                                                    await db
+                                                        .collection('products')
+                                                        .doc(item?.docId)
+                                                        .delete();
+                                                    final productCategory =
+                                                        await db
+                                                            .collection(
+                                                                'products')
+                                                            .doc(item?.docId)
+                                                            .collection(
+                                                                'category')
+                                                            .get();
+                                                    final foo = productCategory
+                                                        .docs.first;
+                                                    final categoryId =
+                                                        foo.data()['docId'];
+                                                    final bar = await db
+                                                        .collection('category')
+                                                        .doc(categoryId)
+                                                        .collection('products')
+                                                        .where('docId',
+                                                            isEqualTo:
+                                                                item?.docId);
                                                   },
                                                 ),
                                               ],
                                             ),
                                           ],
                                         ),
-                                        Text("${item?.price}원"?? "가격"),
-                                        Text(switch(item?.isSale){
+                                        Text("${item?.price}원" ?? "가격"),
+                                        Text(switch (item?.isSale) {
                                           true => "할인 중 : ${item?.saleRate} %",
                                           false => "정상가격",
                                           _ => "??",
