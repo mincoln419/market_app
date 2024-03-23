@@ -101,7 +101,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                 SizedBox(
                   height: 16,
                 ),
-                //TODO: 카테고리목록받아오기
                 Container(
                   height: 240,
                   child: StreamBuilder(

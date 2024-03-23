@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:market_app/main.dart';
 
 import '../model/product.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key, required this.product});
+
   final Product product;
 
   @override
@@ -32,29 +35,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     decoration: BoxDecoration(
                       color: Colors.orange,
                       image: DecorationImage(
-                        image: NetworkImage(widget.product.imgUrl ?? ""),
-                        fit: BoxFit.cover
-                      ),
+                          image: NetworkImage(widget.product.imgUrl ?? ""),
+                          fit: BoxFit.cover),
                     ),
                     child: Center(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          switch(widget.product.isSale){
+                          switch (widget.product.isSale) {
                             true => Container(
-                              decoration: const BoxDecoration(color: Colors.red),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
-                              ),
-                              child: const Text(
-                                '할인중',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                decoration:
+                                    const BoxDecoration(color: Colors.red),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 12,
+                                ),
+                                child: const Text(
+                                  '할인중',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
                             // TODO: Handle this case.
                             _ => Container(),
                           },
@@ -141,10 +144,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             }),
                           ],
                         ),
-                        Text('제품상세정보', style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[500],
-                        ),),
+                        Text(
+                          '제품상세정보',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[500],
+                          ),
+                        ),
                         Text('${widget.product.description}'),
                         Row(
                           children: [
@@ -201,6 +207,37 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ),
           ),
           GestureDetector(
+            onTap: () async {
+              final db = FirebaseFirestore.instance;
+              final dupItems = await db
+                  .collection('cart')
+                  .where('uid', isEqualTo: userCredential?.user?.uid ?? "")
+                  .where('product.docId', isEqualTo: widget.product.docId)
+                  .get();
+              if (dupItems.docs.isNotEmpty && context.mounted) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    content: const Text('장바구니에 이미 등록되어 있는 제품입니다.'),
+                  ),
+                );
+                return;
+              }
+              await db.collection('cart').add(
+                {
+                  'uid': userCredential?.user?.uid ?? "",
+                  'email': userCredential?.user?.email ?? "",
+                  'timestamp': DateTime.now().millisecondsSinceEpoch,
+                  'product': widget.product.toJson(),
+                  'count': 1,
+                },
+              );
+              if(context.mounted){
+                showDialog(context: context, builder: (context) => AlertDialog(
+                  content: Text('장바구니 등록 완료'),
+                ));
+              }
+            },
             child: Container(
               height: 72,
               decoration: BoxDecoration(

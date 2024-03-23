@@ -18,6 +18,7 @@ import 'home/product_add_screen.dart';
 import 'model/product.dart';
 
 List<CameraDescription> cameras = [];
+UserCredential? userCredential;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +42,7 @@ void main() async {
 class MermerApp extends StatelessWidget {
   MermerApp({super.key});
 
-  final router = GoRouter(initialLocation: "/", routes: [
+  final router = GoRouter(initialLocation: "/login", routes: [
     GoRoute(
       path: "/",
       builder: (context, state) => HomeScreen(),

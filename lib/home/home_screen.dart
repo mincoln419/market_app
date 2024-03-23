@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:market_app/home/cart_screen.dart';
 import 'package:market_app/home/product_add_screen.dart';
 import 'package:market_app/home/widgets/home_widget.dart';
 import 'package:market_app/home/widgets/seller_widget.dart';
+import 'package:market_app/main.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,11 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
         0 => FloatingActionButton(
             child: const Icon(Icons.shopping_cart_outlined),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const CartScreen(uid: ""),
-                ),
-              );
+              final uid = userCredential?.user?.uid;
+              if(uid == null){
+                return;
+              }
+              context.go("/cart/$uid");
             },
           ),
         1 => FloatingActionButton(
