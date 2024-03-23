@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:market_app/home/cart_screen.dart';
 import 'package:market_app/home/product_add_screen.dart';
 import 'package:market_app/home/widgets/home_widget.dart';
 import 'package:market_app/home/widgets/seller_widget.dart';
+import 'package:market_app/login/provider/login_provider.dart';
 import 'package:market_app/main.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,16 +40,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: switch (_menuIndex) {
-        0 => FloatingActionButton(
-            child: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () {
-              final uid = userCredential?.user?.uid;
-              if(uid == null){
-                return;
-              }
-              context.go("/cart/$uid");
-            },
-          ),
+        0 => Consumer(
+          builder: (context, ref, child) {
+            final user = ref.watch(userCredentialProvider);
+            return FloatingActionButton(
+                child: const Icon(Icons.shopping_cart_outlined),
+                onPressed: () {
+                  final uid = user?.user?.uid;
+                  if(uid == null){
+                    return;
+                  }
+                  context.go("/cart/$uid");
+                },
+              );
+          }
+        ),
         1 => FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () {

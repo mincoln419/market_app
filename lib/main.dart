@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:market_app/firebase_options.dart';
 import 'package:market_app/home/cart_screen.dart';
@@ -36,7 +37,11 @@ void main() async {
       print(e);
     }
   }
-  runApp(MermerApp());
+  runApp(
+    ProviderScope(
+      child: MermerApp(),
+    ),
+  );
 }
 
 class MermerApp extends StatelessWidget {
@@ -49,10 +54,9 @@ class MermerApp extends StatelessWidget {
       routes: [
         GoRoute(
           path: "cart/:uid",
-          builder: (context, state) =>
-              CartScreen(
-                uid: state.pathParameters['uid'] ?? "",
-              ),
+          builder: (context, state) => CartScreen(
+            uid: state.pathParameters['uid'] ?? "",
+          ),
         ),
         GoRoute(
             path: "product",
@@ -60,8 +64,7 @@ class MermerApp extends StatelessWidget {
               return ProductDetailScreen(
                 product: state.extra as Product,
               );
-            }
-        ),
+            }),
         GoRoute(
           path: "product/add",
           builder: (context, state) => ProductAddScreen(),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../model/product.dart';
 
@@ -14,8 +15,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  int sumPrice = 0;
-
   Stream<QuerySnapshot<Map<String, dynamic>>> cartStreamItems() {
     return FirebaseFirestore.instance
         .collection('cart')
@@ -81,7 +80,15 @@ class _CartScreenState extends State<CartScreen> {
                                       children: [
                                         Text('${item.product?.title}'),
                                         IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            final db = FirebaseFirestore.instance;
+                                            final ref = db.collection('cart');
+                                            ref.doc('${item.cartDocId}').get().then((
+                                                value) {
+                                              value.reference.delete();
+                                            });
+                                          },
+
                                           icon: const Icon(Icons.delete),
                                         ),
                                       ],
@@ -143,19 +150,39 @@ class _CartScreenState extends State<CartScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   '합계',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
-                Text(
-                  '${sumPrice.toStringAsFixed(0)} 원',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                StreamBuilder(
+                  stream: cartStreamItems(),
+                  builder: (context, snapshot) {
+                    double totalPrice = 0.0;
+                    if(snapshot.hasData){
+                      List<Cart> items = snapshot.data?.docs.map((e){
+                        final foo = Cart.fromJson(e.data());
+                        return foo.copyWith(cartDocId: e.id);
+                      }).toList() ?? [];
+
+                      for(var ele in items){
+                        if(ele.product?.isSale ?? false){
+                          totalPrice += ((ele.product!.price! * (ele.product!.saleRate!/100))* (ele.count ?? 1));
+                        }else{
+                          totalPrice += ((ele.product!.price! * ele.count! ?? 1));
+                        }
+                      }
+                    }
+                    return Text(
+                      '${totalPrice.toStringAsFixed(0)} 원',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    );
+                  }
                 )
               ],
             ),
