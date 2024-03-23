@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../model/category.dart';
+import 'camera_example_page.dart';
 
 class ProductAddScreen extends StatefulWidget {
   const ProductAddScreen({super.key});
@@ -39,6 +40,17 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       appBar: AppBar(
         title: Text('상품추가'),
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return CameraExamplePage();
+                    },
+                  ),
+                );
+              },
+              icon: Icon(Icons.camera_alt_outlined)),
           IconButton(onPressed: () {}, icon: Icon(Icons.batch_prediction)),
           IconButton(onPressed: () {}, icon: Icon(Icons.add)),
         ],
@@ -48,14 +60,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () async{
+              onTap: () async {
                 final ImagePicker picker = ImagePicker();
                 image = await picker.pickImage(source: ImageSource.gallery);
                 print('${image?.name}, ${image?.path}');
                 imageData = await image?.readAsBytes();
-                setState(() {
-
-                });
+                setState(() {});
               },
               child: Align(
                 alignment: Alignment.center,
@@ -70,13 +80,15 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       color: Colors.grey,
                     ),
                   ),
-                  child: imageData == null ? const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add),
-                      Text('제품(상품) 이미지 추가'),
-                    ],
-                  ): Image.memory(imageData!, fit: BoxFit.cover),
+                  child: imageData == null
+                      ? const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            Text('제품(상품) 이미지 추가'),
+                          ],
+                        )
+                      : Image.memory(imageData!, fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -198,9 +210,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     DropdownButton(
                       isExpanded: true,
                       items: [],
-                      onChanged: (s){
-
-                      },
+                      onChanged: (s) {},
                     )
                   ],
                 ),

@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,17 +16,21 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'home/home_screen.dart';
 import 'home/product_add_screen.dart';
 
-void main() async{
+List<CameraDescription> cameras = [];
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  if(kDebugMode){
-    try{
+  cameras = await availableCameras();
+
+  if (kDebugMode) {
+    try {
       await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
       FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
       FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
@@ -35,7 +40,7 @@ void main() async{
 class MermerApp extends StatelessWidget {
   MermerApp({super.key});
 
-  final router = GoRouter(initialLocation: "/login", routes: [
+  final router = GoRouter(initialLocation: "/", routes: [
     GoRoute(
       path: "/",
       builder: (context, state) => HomeScreen(),
