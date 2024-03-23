@@ -159,7 +159,7 @@ class _SellerWidgetState extends State<SellerWidget> {
                                         ),
                                         Text("${item?.price}원"?? "가격"),
                                         Text(switch(item?.isSale){
-                                          true => "할인 중",
+                                          true => "할인 중 : ${item?.saleRate} %",
                                           false => "정상가격",
                                           _ => "??",
                                         }),
