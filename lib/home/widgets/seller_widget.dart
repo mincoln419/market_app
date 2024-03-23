@@ -101,58 +101,75 @@ class _SellerWidgetState extends State<SellerWidget> {
                       itemCount: items?.length,
                       itemBuilder: (context, index) {
                         final item = items?[index];
-                        return Container(
-                          height: 120,
-                          margin: const EdgeInsets.only(bottom: 16),
-                          color: Colors.orange,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 120,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(8),
-                                  //image: DecorationImage()
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "제품 명",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          PopupMenuButton(
-                                            itemBuilder: (context) => [
-                                              PopupMenuItem(
-                                                child: Text("리뷰"),
-                                              ),
-                                              PopupMenuItem(
-                                                child: Text("삭제"),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Text("1000000원"),
-                                      Text("특가할일"),
-                                      Text("재고수량"),
-                                    ],
+                        return GestureDetector(
+                          onTap: (){
+                            print(item?.docId);
+                          },
+                          child: Container(
+                            height: 120,
+                            margin: const EdgeInsets.only(bottom: 16),
+                            color: Colors.orange,
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(8),
+                                    image: DecorationImage(
+                                      image: NetworkImage(item?.imgUrl?? "https://cdn.pixabay.com/photo/2024/03/05/19/26/duck-8615153_1280.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              )
-                            ],
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              item?.title ?? "제품 명",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            PopupMenuButton(
+                                              itemBuilder: (context) => [
+                                                PopupMenuItem(
+                                                  child: Text("리뷰"),
+                                                ),
+                                                PopupMenuItem(
+                                                  child: Text("삭제"),
+                                                  onTap: () async {
+                                                    await FirebaseFirestore.instance.collection('products').doc(
+                                                      item?.docId
+                                                    ).delete();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        Text("${item?.price}원"?? "가격"),
+                                        Text(switch(item?.isSale){
+                                          true => "할인 중",
+                                          false => "정상가격",
+                                          _ => "??",
+                                        }),
+                                        Text("재고수량: ${item?.stock} 개"),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         );
                       },
