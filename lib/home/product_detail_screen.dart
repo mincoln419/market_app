@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:market_app/login/provider/login_provider.dart';
 import 'package:market_app/main.dart';
 
 import '../model/product.dart';
@@ -129,10 +131,39 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                                     Navigator.of(context).pop(),
                                                 child: Text('취소'),
                                               ),
-                                              TextButton(
-                                                onPressed: () {},
-                                                child: Text('등록'),
-                                              ),
+                                              Consumer(builder:
+                                                  (context, ref, child) {
+                                                final user = ref.watch(
+                                                    userCredentialProvider);
+                                                return TextButton(
+                                                  onPressed: () async {
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('products')
+                                                        .doc(
+                                                            '${widget.product.docId}')
+                                                        .collection('reviews')
+                                                        .add(
+                                                      {
+                                                        'uid':
+                                                            user?.user?.uid ??
+                                                                '',
+                                                        'email':
+                                                            user?.user?.email ??
+                                                                '',
+                                                        'comment':
+                                                            reviewTEC.text,
+                                                        'timestamp':
+                                                            Timestamp.now(),
+                                                        'score':
+                                                            reviewScore + 1,
+                                                      },
+                                                    );
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Text('등록'),
+                                                );
+                                              }),
                                             ],
                                           );
                                         });
@@ -193,9 +224,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               Container(
                                 child: Text('제품 상세'),
                               ),
-                              Container(
-                                child: Text('리뷰 화면'),
-                              ),
+                              StreamBuilder(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('products')
+                                      .doc('${widget.product.docId}')
+                                      .collection(('reviews'))
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+
+                                    if(snapshot.hasData){
+                                      final items = snapshot.data?.docs?? [];
+                                      return ListView.separated(itemBuilder: (context, index){
+
+                                        return ListTile(
+                                          title: Text('${items[index].data()['comment']}'),
+                                        );
+
+                                      }, separatorBuilder: (_, __) => Divider(), itemCount: items.length);
+                                    }
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+
+                                  }),
                             ],
                           ),
                         ),
@@ -232,10 +283,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   'count': 1,
                 },
               );
-              if(context.mounted){
-                showDialog(context: context, builder: (context) => AlertDialog(
-                  content: Text('장바구니 등록 완료'),
-                ));
+              if (context.mounted) {
+                showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          content: Text('장바구니 등록 완료'),
+                        ));
               }
             },
             child: Container(
