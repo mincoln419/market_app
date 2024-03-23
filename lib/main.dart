@@ -15,6 +15,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'home/home_screen.dart';
 import 'home/product_add_screen.dart';
+import 'model/product.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -47,13 +48,18 @@ class MermerApp extends StatelessWidget {
       routes: [
         GoRoute(
           path: "cart/:uid",
-          builder: (context, state) => CartScreen(
-            uid: state.pathParameters['uid'] ?? "",
-          ),
+          builder: (context, state) =>
+              CartScreen(
+                uid: state.pathParameters['uid'] ?? "",
+              ),
         ),
         GoRoute(
-          path: "product",
-          builder: (context, state) => ProductDetailScreen(),
+            path: "product",
+            builder: (context, state) {
+              return ProductDetailScreen(
+                product: state.extra as Product,
+              );
+            }
         ),
         GoRoute(
           path: "product/add",

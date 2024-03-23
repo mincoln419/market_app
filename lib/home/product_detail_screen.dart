@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../model/product.dart';
+
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+  const ProductDetailScreen({super.key, required this.product});
+  final Product product;
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -14,7 +17,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("메르 제품 상세"),
+        title: Text("${widget.product.title}"),
       ),
       body: Column(
         children: [
@@ -28,25 +31,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.orange,
+                      image: DecorationImage(
+                        image: NetworkImage(widget.product.imgUrl ?? ""),
+                        fit: BoxFit.cover
+                      ),
                     ),
                     child: Center(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(color: Colors.red),
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 12,
-                            ),
-                            child: Text(
-                              '할인중',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                          switch(widget.product.isSale){
+                            true => Container(
+                              decoration: const BoxDecoration(color: Colors.red),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 12,
+                              ),
+                              child: const Text(
+                                '할인중',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
+                            // TODO: Handle this case.
+                            _ => Container(),
+                          },
                         ],
                       ),
                     ),
@@ -59,8 +70,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              '메르메르 인형',
+                            Text(
+                              "${widget.product.title}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
@@ -130,19 +141,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             }),
                           ],
                         ),
-                        const Text('제품상세정보'),
-                        const Text('상세 description'),
-                        const Row(
+                        Text('제품상세정보', style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey[500],
+                        ),),
+                        Text('${widget.product.description}'),
+                        Row(
                           children: [
                             Text(
-                              '100000원',
-                              style: TextStyle(
+                              '${widget.product.price} 원',
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
                             ),
-                            Spacer(),
-                            Icon(
+                            const Spacer(),
+                            const Icon(
                               Icons.star,
                               color: Colors.orange,
                             ),
