@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Icon(Icons.shopping_cart_outlined),
                 onPressed: () {
                   final uid = user?.user?.uid;
+                  print('uid: $uid');
                   if(uid == null){
                     return;
                   }

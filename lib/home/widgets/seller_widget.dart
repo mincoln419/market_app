@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../model/product.dart';
 
@@ -104,6 +105,7 @@ class _SellerWidgetState extends State<SellerWidget> {
                         return GestureDetector(
                           onTap: () {
                             print(item?.docId);
+                            context.go("/product", extra: items![index]);
                           },
                           child: Container(
                             height: 120,

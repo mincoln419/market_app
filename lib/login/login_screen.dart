@@ -149,23 +149,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text("계정이 없나요? 회원가입"),
                       ),
                       const Divider(),
-                      InkWell(
-                        onTap: () async {
-                          final userCredential = await signInWithGoogle();
-                          if (userCredential == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('로그인 실패-google'),
-                              ),
-                            );
-                            return;
-                          }
-                          if(context.mounted){
-                            context.go("/");
-                          }
-                        },
-                        child:
-                            Image.asset("assets/images/btn_google_signin.png"),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          return InkWell(
+                            onTap: () async {
+                              final userCredential = await signInWithGoogle();
+                              if (userCredential == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('로그인 실패-google'),
+                                  ),
+                                );
+                                return;
+                              }
+                              ref.watch(userCredentialProvider.notifier).state = userCredential;
+                              if(context.mounted){
+                                context.go("/");
+                              }
+                            },
+                            child:
+                                Image.asset("assets/images/btn_google_signin.png"),
+                          );
+                        }
                       ),
                     ],
                   ))

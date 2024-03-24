@@ -257,55 +257,61 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () async {
-              final db = FirebaseFirestore.instance;
-              final dupItems = await db
-                  .collection('cart')
-                  .where('uid', isEqualTo: userCredential?.user?.uid ?? "")
-                  .where('product.docId', isEqualTo: widget.product.docId)
-                  .get();
-              if (dupItems.docs.isNotEmpty && context.mounted) {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    content: const Text('장바구니에 이미 등록되어 있는 제품입니다.'),
-                  ),
-                );
-                return;
-              }
-              await db.collection('cart').add(
-                {
-                  'uid': userCredential?.user?.uid ?? "",
-                  'email': userCredential?.user?.email ?? "",
-                  'timestamp': DateTime.now().millisecondsSinceEpoch,
-                  'product': widget.product.toJson(),
-                  'count': 1,
+          Consumer(
+            builder: (context, ref, child) {
+    final user = ref.watch(
+    userCredentialProvider);
+              return GestureDetector(
+                onTap: () async {
+                  final db = FirebaseFirestore.instance;
+                  final dupItems = await db
+                      .collection('cart')
+                      .where('uid', isEqualTo: user?.user?.uid ?? "")
+                      .where('product.docId', isEqualTo: widget.product.docId)
+                      .get();
+                  if (dupItems.docs.isNotEmpty && context.mounted) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        content: const Text('장바구니에 이미 등록되어 있는 제품입니다.'),
+                      ),
+                    );
+                    return;
+                  }
+                  await db.collection('cart').add(
+                    {
+                      'uid': user?.user?.uid ?? "",
+                      'email': user?.user?.email ?? "",
+                      'timestamp': DateTime.now().millisecondsSinceEpoch,
+                      'product': widget.product.toJson(),
+                      'count': 1,
+                    },
+                  );
+                  if (context.mounted) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              content: Text('장바구니 등록 완료'),
+                            ));
+                  }
                 },
-              );
-              if (context.mounted) {
-                showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                          content: Text('장바구니 등록 완료'),
-                        ));
-              }
-            },
-            child: Container(
-              height: 72,
-              decoration: BoxDecoration(
-                color: Colors.red[100],
-              ),
-              child: Center(
-                child: Text(
-                  '장바구니',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
+                child: Container(
+                  height: 72,
+                  decoration: BoxDecoration(
+                    color: Colors.red[100],
+                  ),
+                  child: Center(
+                    child: Text(
+                      '장바구니',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            }
           )
         ],
       ),
